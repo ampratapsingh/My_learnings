@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DOM Learning</title>
+  </head>
+  <body>
+    <h1 id="title">Hello World</h1>
+    <h1 id="main-heading">Welcome!</h1>
+    <p class="info">Learning DOM is fun!</p>
+    <p>One</p>
+    <p>Two</p>
+    <p class="note">This is a note</p>
+    <p class="note">Another note</p>
+    <ul id="list">
+      <li>Item 1</li>
+    </ul>
+    <button onclick="alert('Clicked!')">Click Me</button>
+    <button id="btn">Click</button>
+
+    <div class="parent">
+      <p>Direct child 1</p>
+      <span>
+        <p>Nested child</p>
+      </span>
+      <p>Direct child 2</p>
+    </div>
+  </body>
+  <script>
+    //Accessing the DOM (The Document Object)
+    // console.log(document.title);
+    // console.log(document.body);
+
+    //getElementById
+    // let heading = document.getElementById("main-heading");
+    // console.log(heading.textContent);
+
+    //getElementsByTagName
+    // let paras = document.getElementsByTagName("p");
+    // console.log(paras);
+    // console.log(paras.length);
+    // console.log(paras[0].textContent);
+
+    //getElementsByClassName
+    // let notes = document.getElementsByClassName("note");
+    // console.log(notes);
+    // console.log(notes.length);
+    // console.log(notes[1].textContent);
+
+    //querySelector & querySelectorAll
+    // let first = document.querySelector(".info");
+    // let all = document.querySelectorAll(".note");
+    // console.log(first.textContent);
+    // console.log(all[1].textContent);
+
+    //HTML Collections vs NodeLists
+    // let live = document.getElementsByTagName("li");
+    // let staticList = document.querySelectorAll("li");
+
+    // document.getElementById("list").innerHTML += "<li>Item 2</li>";
+
+    // console.log(live.length); // 2 (auto-updated)
+    // console.log(staticList.length); // 1 (unchanged)
+
+    //Changing Content
+    // document.getElementById("title").textContent = "Hello Again!";
+
+    //Adding and Deleting Elements
+    let list = document.getElementById("list");
+    let newItem = document.createElement("li");
+    newItem.textContent = "Item 2";
+    list.appendChild(newItem);
+    list.removeChild(list.children[0]);
+
+    //DOM Events
+    let btn = document.getElementById("btn");
+    btn.addEventListener("click", function () {
+      alert("Clicked!");
+    });
+
+    let directPs = document.querySelectorAll("div > p");
+
+    directPs.forEach((p) => {
+      console.log(p.textContent);
+    });
+  </script>
+</html>
