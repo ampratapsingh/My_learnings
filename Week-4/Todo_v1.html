@@ -1,0 +1,66 @@
+<html>
+
+  <body>
+     <input type="text" id="title" placeholder="Todo Title"><br/><br/>
+      <input type="text" id="description" placeholder="Description"> <br/><br/>
+      <button onclick="addTodo()">Add Todo</button>
+      <br/><br/>
+      <div id="todos"></div>
+  </body>
+
+  <script>
+    let globalId = 1;
+
+    function markAsDone(id){
+      const parent = document.getElementById(id);
+      parent.children[2].innerHTML = "Done";  //since button is 3rd
+    }
+
+    function createChild(title, description, id){
+      const child = document.createElement("div");
+      const firstGrandChild = document.createElement("div");
+      const secondGrandChild = document.createElement("div");
+      const thirdGrandChild = document.createElement("button");
+      firstGrandChild.innerHTML = title;
+      secondGrandChild.innerHTML = description;
+      thirdGrandChild.innerHTML = "Mark as done";
+      thirdGrandChild.setAttribute("onclick", `markAsDone(${id})`);  //by atribute means id class onClick etc the markAsDone function will eventually change the inner html to Done
+      child.appendChild(firstGrandChild);
+      child.appendChild(secondGrandChild);
+      child.appendChild(thirdGrandChild);
+      child.setAttribute("id", id);
+      return child;
+    }
+
+    function addTodo(){
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const parent = document.getElementById("todos");
+
+      parrent.appendChild(createChild(title, description, globalId++));
+    }
+  </script>
+
+</html>
+
+<!-- //function markAsDone(id){
+  const parent = document.getElementById(id);
+  parent.children[2].innerHTML = "Done";
+}
+
+//function createChild(title, description, id){
+  const child = document.createElement("div");
+  const fg = document.createElement("div");
+  const sg = document.createElement("div");
+  const tg = document.createElement("div");
+  fg.innerHTML = title;
+  sg.innerHTML = description;
+  tg.setAttribute("onClick", `markAsDone(${id})`);
+  child.appendChild(fg);
+  child.appendChild(sg);
+  child.appendChild(tg);
+  child.setAttribute("id", id);
+  return child;
+
+
+} -->

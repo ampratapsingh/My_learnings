@@ -1,0 +1,140 @@
+//Also updates the state in case of dynamic data from the backend
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Todo App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #todos {
+      margin-top: 20px;
+    }
+    .todo {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+    }
+    .todo button {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Todo App</h1>
+
+  <input id="title" placeholder="Enter title" />
+  <input id="description" placeholder="Enter description" />
+  <button onclick="addTodo()">Add Todo</button>
+
+  <div id="todos"></div>
+
+  <script>
+    let globalId = 1;
+    let todoState = [];
+    let oldTodoState = [];
+
+    function removeTodo(todo) {
+      const element = document.getElementById(todo.id);
+      element.parentNode.removeChild(element);
+    }
+
+    function updateTodo(oldTodo, newTodo) {
+      const element = document.getElementById(oldTodo.id);
+      element.children[0].innerHTML = newTodo.title;
+      element.children[1].innerHTML = newTodo.description;
+      element.children[2].innerHTML = newTodo.completed ? "Done" : "Mark as done";
+    }
+
+    function updateState(newTodos) {
+      const added = [];
+      const deleted = [];
+      const updated = [];
+
+      // check for added
+      for (let i = 0; i < newTodos.length; i++) {
+        const exists = oldTodoState.find(t => t.id === newTodos[i].id);
+        if (!exists) added.push(newTodos[i]);
+      }
+
+      // check for deleted
+      for (let i = 0; i < oldTodoState.length; i++) {
+        const exists = newTodos.find(t => t.id === oldTodoState[i].id);
+        if (!exists) deleted.push(oldTodoState[i]);
+      }
+
+      // check for updated
+      for (let i = 0; i < newTodos.length; i++) {
+        const old = oldTodoState.find(t => t.id === newTodos[i].id);
+        if (old && (old.title !== newTodos[i].title ||
+          old.description !== newTodos[i].description ||
+          old.completed !== newTodos[i].completed)) {
+          updated.push({ oldTodo: old, newTodo: newTodos[i] });
+        }
+      }
+
+      // perform DOM updates
+      added.forEach(todo => {
+        const container = document.getElementById("todos");
+        const todoDiv = document.createElement("div");
+        todoDiv.className = "todo";
+        todoDiv.id = todo.id;
+
+        const titleEl = document.createElement("h3");
+        titleEl.innerHTML = todo.title;
+
+        const descEl = document.createElement("p");
+        descEl.innerHTML = todo.description;
+
+        const btn = document.createElement("button");
+        btn.innerHTML = "Mark as done";
+        btn.onclick = function () {
+          todo.completed = !todo.completed;
+          updateState(todoState);
+        };
+
+        const delBtn = document.createElement("button");
+        delBtn.innerHTML = "Delete";
+        delBtn.onclick = function () {
+          todoState = todoState.filter(t => t.id !== todo.id);
+          updateState(todoState);
+        };
+
+        todoDiv.appendChild(titleEl);
+        todoDiv.appendChild(descEl);
+        todoDiv.appendChild(btn);
+        todoDiv.appendChild(delBtn);
+
+        container.appendChild(todoDiv);
+      });
+
+      deleted.forEach(removeTodo);
+      updated.forEach(obj => updateTodo(obj.oldTodo, obj.newTodo));
+
+      oldTodoState = [...newTodos];
+    }
+
+    function addTodo() {
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      todoState.push({
+        title: title,
+        description: description,
+        id: globalId++,
+        completed: false
+      });
+      updateState(todoState);
+    }
+  </script>
+</body>
+
+</html>
+
+<!-- //Basically React manges the change in the previous and the current state wheras React-Dom manages the DOM or is responsible for updating the DOM.
+//State is basically the data that is used to render the UI. In case of an array the state was the array of todos from the backend. -->
