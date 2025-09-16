@@ -1,7 +1,8 @@
-import React, { useState, createContext, useContext } from "react";
+import { useState, useContext } from "react";
 
-// 1. Create the Context
-export const CountContext = createContext();
+// 1. Import the Context
+import { CountContext } from "./Context";
+
 
 export const App2 = () => {
   const [count, setCount] = useState(0);
