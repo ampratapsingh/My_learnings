@@ -38,3 +38,43 @@ async function insertData(username: string, email: string, password: string) {
 }
 
 insertData("username", "email", "password");
+
+async function insertUserAndAddress(
+  username: string,
+  email: string,
+  password: string,
+  city: string,
+  country: string,
+  street: string,
+  pincode: string
+) {
+  try {
+    await client.connect();
+    const insertUser =
+      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id";
+    const userResValues = [username, email, password];
+    const userRes = await client.query(insertUser, userResValues);
+
+    const userId = userRes.rows[0].id;
+
+    const insertAddress =
+      "INSERT INTO addresses (user_id, city, country, street, pincode) VALUES ($1, $2, $3, $4, $5)";
+    const addressResValues = [userId, city, country, street, pincode];
+    const addressRes = await client.query(insertAddress, addressResValues);
+    console.log("Insertion successful:", addressRes);
+  } catch (err) {
+    console.error("Error inserting data:", err);
+  } finally {
+    await client.end();
+  }
+}
+
+insertUserAndAddress(
+  "username",
+  "email",
+  "password",
+  "city",
+  "country",
+  "street",
+  "pincode"
+);
