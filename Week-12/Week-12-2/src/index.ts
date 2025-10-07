@@ -39,7 +39,7 @@ interface Config {
 }
 
 const config: Readonly<Config> = {
-  endpoint: 'https://api.example.com',
+  endpoint: 'https://api.publicapis.org/entries',
   apiKey: '12345',
 }
 
