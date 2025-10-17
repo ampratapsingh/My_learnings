@@ -109,8 +109,8 @@ function filteredUsers(users: User[]) {
 }
 
 console.log(filteredUsers([{
-    firstName: "John",
-    lastName: "Smith",
+    firstName: "Prince",
+    lastName: "Singh",
     email: "9iMlR@example.com",
     age: 18
 }]))
